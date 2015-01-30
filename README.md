@@ -1,7 +1,7 @@
 Recaptcha
 =========
 
-A reCAPTCHA Validator for Laravel 4.
+A reCAPTCHA Validator for Laravel 5.
 
 ## Installation
 
@@ -10,16 +10,16 @@ Add the following line to the `require` section of `composer.json`:
 ```json
 {
     "require": {
-        "greggilbert/recaptcha": "dev-master"
+        "jeffreyvdb/recaptcha": "dev-master"
     }
 }
 ```
 
 ## Laravel 4 Setup
 
-1. Add `Greggilbert\Recaptcha\RecaptchaServiceProvider` to the service provider list in `app/config/app.php`.
-2. Run `php artisan config:publish greggilbert/recaptcha`.
-3. In `app/config/packages/greggilbert/recaptcha/config.php`, enter your reCAPTCHA public and private keys.
+1. Add `JeffreyVdb\Recaptcha\RecaptchaServiceProvider` to the service provider list in `config/app.php`.
+2. Run `php artisan vendor:publish`.
+3. In `config/packages/jeffreyvdb/recaptcha/config.php`, enter your reCAPTCHA public and private keys.
   * If you are not using the most recent version of reCAPTCHA, set `version` to 1. 
   * If you are upgrading to v2 of reCAPTCHA, note that your keys from the previous version will not work, and you need to generate a new set in [the reCAPTCHA admin](https://www.google.com/recaptcha/admin).
 4. Add the following line into `app/lang/[lang]/validation.php`:
