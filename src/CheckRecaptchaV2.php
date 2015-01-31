@@ -16,7 +16,7 @@ class CheckRecaptchaV2 implements RecaptchaInterface
     public function check($challenge, $response)
     {
         $parameters = http_build_query(array(
-            'secret'   => app('config')->get('recaptcha::config.private_key'),
+            'secret'   => config('recaptcha.private_key'),
             'remoteip' => app('request')->getClientIp(),
             'response' => $response,
         ));
@@ -25,7 +25,7 @@ class CheckRecaptchaV2 implements RecaptchaInterface
         $checkResponse = null;
 
         // prefer curl, but fall back to file_get_contents
-        if ('curl' === app('config')->get('recaptcha::config.driver') && function_exists('curl_version')) {
+        if ('curl' === config('recaptcha.driver') && function_exists('curl_version')) {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_HEADER, false);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

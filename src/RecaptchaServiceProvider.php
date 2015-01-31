@@ -25,7 +25,15 @@ class RecaptchaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('greggilbert/recaptcha');
+//        $this->package('jeffreyvdb/recaptcha');
+        // Add publish paths
+        $this->loadViewsFrom(__DIR__ . '/views', 'recaptcha');
+        $this->publishes([
+            __DIR__ . '/views'             => base_path('resources/views/vendor/recaptcha')
+        ]);
+
+        // Merge config
+        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'recaptcha');
 
         $this->addValidator();
         $this->addFormMacro();
@@ -39,7 +47,7 @@ class RecaptchaServiceProvider extends ServiceProvider
         $validator = $this->app['Validator'];
 
         $validator::extend('recaptcha', function ($attribute, $value, $parameters) {
-            $captcha = app('JeffreyVdb\Recaptcha\RecaptchaInterface');
+            $captcha   = app('JeffreyVdb\Recaptcha\RecaptchaInterface');
             $challenge = app('Input')->get($captcha->getResponseKey());
 
             return $captcha->check($challenge, $value);
@@ -51,13 +59,13 @@ class RecaptchaServiceProvider extends ServiceProvider
      */
     public function addFormMacro()
     {
-        app('form')->macro('captcha', function ($options = array()) {
-            $configOptions = app('config')->get('recaptcha::options', array());
+        $this->app['form']->macro('captcha', function ($options = array()) {
+            $configOptions = config('recaptcha.options', array());
 
             $mergedOptions = array_merge($configOptions, $options);
 
             $data = array(
-                'public_key' => app('config')->get('recaptcha::public_key'),
+                'public_key' => config('recaptcha.public_key'),
                 'options'    => $mergedOptions,
             );
 
@@ -67,7 +75,7 @@ class RecaptchaServiceProvider extends ServiceProvider
 
             $view = 'recaptcha::' . app('JeffreyVdb\Recaptcha\RecaptchaInterface')->getTemplate();
 
-            $configTemplate = app('config')->get('recaptcha::template', '');
+            $configTemplate = config('recaptcha.template', '');
 
             if (array_key_exists('template', $options)) {
                 $view = $options['template'];
@@ -89,7 +97,7 @@ class RecaptchaServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('JeffreyVdb\Recaptcha\RecaptchaInterface', function () {
-            if (app('config')->get('recaptcha::version', false) === 2 || app('config')->get('recaptcha::v2', false)) {
+            if (config('recaptcha.version', false) === 2 || config('recaptcha.v2', false)) {
                 return new CheckRecaptchaV2;
             }
 
