@@ -25,7 +25,6 @@ class RecaptchaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        $this->package('jeffreyvdb/recaptcha');
         // Add publish paths
         $this->loadViewsFrom(__DIR__ . '/views', 'recaptcha');
         $this->publishes([
