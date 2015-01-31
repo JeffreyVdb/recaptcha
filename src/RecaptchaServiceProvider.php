@@ -25,8 +25,7 @@ class RecaptchaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('greggilbert/recaptcha');
-
+//        $this->package('jeffreyvdb/recaptcha');
         $this->addValidator();
         $this->addFormMacro();
     }
@@ -51,7 +50,7 @@ class RecaptchaServiceProvider extends ServiceProvider
      */
     public function addFormMacro()
     {
-        app('form')->macro('captcha', function ($options = array()) {
+        $this->app['Illuminate\Html\FormBuilder']->macro('captcha', function ($options = array()) {
             $configOptions = app('config')->get('recaptcha::options', array());
 
             $mergedOptions = array_merge($configOptions, $options);
